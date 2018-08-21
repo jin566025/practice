@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8" />
+		<title></title>
+		<style>
+			
+			#dialog-content{width: 260px;background-color: #fff;z-index:9999;border: 1px solid gainsboro;top:0;left: 0;border-radius:5px ;text-align: center;position: fixed;top: 50%;left:50%;transform: translateX(-50%) translateY(-50%);-moz-transform:  translateX(-50%) translateY(-50%);-ms-transform:  translateX(-50%) translateY(-50%);-webkit-transform:  translateX(-50%) translateY(-50%);}
+			#dialog-confirm{width:100% ;height:40px;line-height:40px;position: relative;}
+			#dialog-confirm:before{position: absolute;top: 0;content: " ";display: block;height: 1px;background-color: gainsboro;left: 0;width: 100%;}
+			#dialog-confirm:after{clear: both;content: " ";display: table;}
+			#dialog-title{padding: 5px 0;}
+			#dialog-desc{padding: 5px 0;}
+			#dialog-shadow{width: 100%;height: 100%;background-color: rgba(0,0,0,0.3);position: fixed;top:0;left: 0;z-index: 9998;}
+			#confirm-sure,#confirm-cancle{width: 50%;float: left;position: relative;cursor: pointer;}
+			#confirm-sure:after{content: " ";width: 1px;height: 100%;right: 0;background-color: gainsboro;position: absolute;}
+		</style>
+	</head>
+	<body>
+		<div class="show">显示</div>
+
+		
+		<script src="https://cdn.bootcss.com/jquery/3.3.1/jquery.min.js"></script>
+		<script type="text/javascript">
+			;(function($){
+				$.extend({
+					dialog:function(option){
+						var defaults = {
+							"title":"对话框aaa",
+							"desc":"描述性文字",
+							"titlePosition":"center",
+							"sureClick":"",
+							"cancleClick":""
+						}
+						var options = $.extend(defaults,option);
+						dialog.init(options)
+					}
+				})
+				var dialog = {
+					init:function(options){
+						var that = this;
+						that.dialogCreate(options);
+						$("#confirm-sure").click(function(){
+							that.dialogHide()
+							options.sureClick()
+						})
+						$("#confirm-cancle").click(function(){
+							that.dialogHide()
+							options.cancleClick()
+						})
+					},
+					dialogShow:function(){
+						
+					},
+					dialogHide:function(){
+						$("#dialog").remove();
+					},
+					dialogCreate:function(options){
+						var html =  '<div id="dialog">'+
+										'<div id="dialog-content">'+
+											'<p id="dialog-title">'+options.title+'</p>'+
+											'<p id="dialog-desc">'+options.desc+'</p>'+
+											'<div id="dialog-confirm">'+
+												'<div id="confirm-sure">确定</div>'+	
+												'<div id="confirm-cancle">取消</div>'+	
+											'</div>'+
+										'</div>'+
+										'<div id="dialog-shadow"></div>'+
+									'</div>';
+						$("body").append(html);
+					}
+				}
+			})(jQuery)
+		</script>
+		<script>
+			
+			$(".show").click(function(){
+				$.dialog({
+					title:"测试一下",
+					sureClick:function(){
+						console.log("sure")
+					},
+					cancleClick:function(){
+						console.log("cancle")
+					}
+				})
+			})
+		</script>
+	</body>
+</html>
